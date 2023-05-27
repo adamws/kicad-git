@@ -14,7 +14,7 @@ KiCad plugin for git integration. Commit changes without leaving PCB editor wind
 This plugin is not released yet and it is not available in KiCad's official plugin repository.
 In order to install via `Plugin and Content Manager` grab latest package build from circleci
 and use `Install from File...` option or alternatively checkout this repository
-and copy (or link) content of `source` directory to on of the KiCad's plugin search paths.
+and copy (or link) content of `source` directory to one of the KiCad's plugin search paths.
 For more details see [this](https://dev-docs.kicad.org/en/python/pcbnew/) guide.
 
 ## How to use?
