@@ -17,6 +17,41 @@ jobs:
           working_directory: tests
       - store_test_results:
           path: tests/test-results
+  test-windows-kicad7:
+    machine:
+      image: windows-server-2022-gui:current
+      shell: powershell.exe -ExecutionPolicy Bypass
+    resource_class: windows.medium
+    steps:
+      - checkout
+      - restore_cache:
+          key: scoop-{{ .Branch }}-{{ checksum "dev-requirements.txt" }}
+      - run:
+          name: Install scoop and KiCad
+          command: |
+            irm get.scoop.sh -outfile "install.ps1"
+            .\install.ps1 -RunAsAdmin -ScoopDir "C:\scoop"
+            scoop bucket add extras
+            scoop install kicad@7.0.2
+            scoop cache rm --all
+      - run:
+          name: Install dependencies
+          command: |
+            .\.circleci\scripts\use-kicad-python.ps1
+            python -m pip install --upgrade pip
+            pip install --no-cache-dir -r dev-requirements.txt
+      - save_cache:
+          key: scoop-{{ .Branch }}-{{ checksum "dev-requirements.txt" }}
+          paths:
+            - C:\scoop
+      - run:
+          name: Run tests
+          command: |
+            ..\.circleci\scripts\use-kicad-python.ps1
+            pytest --junitxml=test-results/pytest/results.xml
+          working_directory: tests
+      - store_test_results:
+          path: tests/test-results
   create-release:
     docker:
       - image: cimg/python:3.11
@@ -33,6 +68,8 @@ workflows:
   main:
     jobs:
       - test-linux-kicad7
+      - test-windows-kicad7
       - create-release:
           requires:
             - test-linux-kicad7
+            - test-windows-kicad7
