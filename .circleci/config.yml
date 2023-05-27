@@ -1,6 +1,22 @@
 version: 2.1
 
 jobs:
+  test-linux-kicad7:
+    docker:
+      - image: admwscki/kicad-kbplacer-primary:7.0-lunar
+    steps:
+      - checkout
+      - run:
+          name: Prepare tests
+          command: |
+            pip3 install --no-cache-dir -r dev-requirements.txt
+      - run:
+          name: Run tests
+          command: |
+            pytest --junitxml=test-results/pytest/results.xml
+          working_directory: tests
+      - store_test_results:
+          path: tests/test-results
   create-release:
     docker:
       - image: cimg/python:3.11
@@ -16,4 +32,7 @@ jobs:
 workflows:
   main:
     jobs:
-      - create-release
+      - test-linux-kicad7
+      - create-release:
+          requires:
+            - test-linux-kicad7
