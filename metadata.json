@@ -1,0 +1,25 @@
+{
+    "$schema": "https://go.kicad.org/pcm/schemas/v1",
+    "name": "Git Plugin",
+    "description": "Git integration for KiCad",
+    "description_full": "Git integration for KiCad",
+    "identifier": "com.github.adamws.kicad-git",
+    "type": "plugin",
+    "author": {
+        "name": "Adam Wysocki (adamws)",
+        "contact": {
+            "web": "https://adamws.github.io/"
+        }
+    },
+    "license": "GPL-3.0",
+    "resources": {
+        "homepage": "https://github.com/adamws/kicad-git"
+    },
+    "versions": [
+        {
+            "version": "0.1",
+            "status": "development",
+            "kicad_version": "7.0"
+        }
+    ]
+}

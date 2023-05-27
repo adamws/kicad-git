@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  create-release:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - run:
+          name: Create zip package
+          command: |
+            ./release/release.sh
+      - store_artifacts:
+          path: release/kicad-git.zip
+
+workflows:
+  main:
+    jobs:
+      - create-release
