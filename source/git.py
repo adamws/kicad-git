@@ -1,6 +1,7 @@
 import subprocess
 
 from pathlib import Path
+from typing import Optional
 
 
 def __run(command: str, cwd: Path) -> str:
@@ -18,15 +19,23 @@ def __run(command: str, cwd: Path) -> str:
     return ""
 
 
-def git_toplevel(path: Path) -> str:
-    return __run("rev-parse --show-toplevel", path).strip()
+def toplevel(path: Path) -> Optional[Path]:
+    result = __run("rev-parse --show-toplevel", path).strip()
+    if result:
+        return Path(result)
+    return None
 
 
-def git_add(repo_dir: Path, path: Path):
+def check_unmodified(repo_dir: Path, path: Path) -> bool:
+    result = __run(f"status --porcelain {path}", repo_dir)
+    return result == ""
+
+
+def add(repo_dir: Path, path: Path):
     __run(f"add {path}", repo_dir)
 
 
-def git_commit_info(repo_dir: Path, path: Path) -> str:
+def commit_info(repo_dir: Path, path: Path) -> str:
     output = __run(
         f"commit --dry-run {path}",
         repo_dir,
@@ -47,8 +56,11 @@ def git_commit_info(repo_dir: Path, path: Path) -> str:
     return result
 
 
-def git_commit(repo_dir: Path, path: Path, message: str):
+def commit(repo_dir: Path, path: Path, message: str):
     __run(
         f'commit -m "{message}" {path}',
         repo_dir,
     )
+
+
+__all__ = ["toplevel", "check_unmodified", "add", "commit_info", "commit"]

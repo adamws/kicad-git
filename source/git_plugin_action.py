@@ -5,7 +5,7 @@ import sys
 import pcbnew
 import wx
 
-from .git import git_toplevel, git_commit_info, git_add, git_commit
+from . import git
 from .git_dialog import GitDialog
 
 
@@ -42,8 +42,8 @@ class GitPluginAction(pcbnew.ActionPlugin):
 
         self.board_dir = os.path.dirname(os.path.abspath(self.board_file))
 
-        self.repo_dir = git_toplevel(self.board_dir)
-        if self.repo_dir == "":
+        self.repo_dir = git.toplevel(self.board_dir)
+        if self.repo_dir == None:
             msg = "Could not locate git repository"
             raise PluginException(msg)
 
@@ -59,9 +59,9 @@ class GitPluginAction(pcbnew.ActionPlugin):
             format="%(asctime)s %(name)s %(lineno)d: %(message)s",
             datefmt="%H:%M:%S",
         )
-        logger.info("Plugin executed with KiCad version: " + version)
-        logger.info("Plugin executed with python version: " + repr(sys.version))
-        logger.info("Repository top directory: {}".format(self.repo_dir.strip()))
+        logger.info(f"Plugin executed with KiCad version: {version}")
+        logger.info(f"Plugin executed with python version: {repr(sys.version)}")
+        logger.info(f"Repository top directory: {self.repo_dir}")
 
     def Run(self) -> None:
         initialized = False
@@ -72,15 +72,23 @@ class GitPluginAction(pcbnew.ActionPlugin):
             error = wx.MessageDialog(self.window, e.message, style=wx.ICON_ERROR)
             error.ShowModal()
 
-        if initialized:
-            git_add(self.repo_dir, self.board_file)
-            commit_info = git_commit_info(self.repo_dir, self.board_file)
+        if initialized and self.repo_dir:
+            is_unmodified = git.check_unmodified(self.repo_dir, self.board_file)
+            if is_unmodified:
+                message = "Nothing to commit"
+                info = wx.MessageDialog(
+                    self.window, message, style=wx.OK | wx.ICON_INFORMATION
+                )
+                info.ShowModal()
+            else:
+                git.add(self.repo_dir, self.board_file)
+                commit_info = git.commit_info(self.repo_dir, self.board_file)
 
-            dlg = GitDialog(self.window, commit_info)
-            if dlg.ShowModal() == wx.ID_OK:
-                message = dlg.get_commit_message()
-                if message:
-                    git_commit(self.repo_dir, self.board_file, message)
-            dlg.Destroy()
+                dlg = GitDialog(self.window, commit_info)
+                if dlg.ShowModal() == wx.ID_OK:
+                    message = dlg.get_commit_message()
+                    if message:
+                        git.commit(self.repo_dir, self.board_file, message)
+                dlg.Destroy()
 
         logging.shutdown()
