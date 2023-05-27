@@ -12,6 +12,12 @@ from .git_dialog import GitDialog
 logger = logging.getLogger(__name__)
 
 
+class PluginException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 class GitPluginAction(pcbnew.ActionPlugin):
     def defaults(self) -> None:
         self.name = "Git Plugin"
@@ -21,23 +27,25 @@ class GitPluginAction(pcbnew.ActionPlugin):
         self.icon_file_name = os.path.join(os.path.dirname(__file__), "icon.png")
 
     def Initialize(self) -> None:
-        version = pcbnew.Version()
-        if int(version.split(".")[0]) < 6:
-            msg = f"KiCad version {version} is not supported"
-            raise Exception(msg)
-        self.board = pcbnew.GetBoard()
+        self.window = wx.GetActiveWindow()
 
+        version = pcbnew.Version()
+        if int(version.split(".")[0]) < 7:
+            msg = f"KiCad version {version} is not supported"
+            raise PluginException(msg)
+
+        self.board = pcbnew.GetBoard()
         self.board_file = self.board.GetFileName()
         if not self.board_file:
             msg = "Could not locate .kicad_pcb file, open or create it first"
-            raise Exception(msg)
+            raise PluginException(msg)
 
         self.board_dir = os.path.dirname(os.path.abspath(self.board_file))
 
         self.repo_dir = git_toplevel(self.board_dir)
         if self.repo_dir == "":
             msg = "Could not locate git repository"
-            raise Exception(msg)
+            raise PluginException(msg)
 
         # Remove all handlers associated with the root logger object.
         for handler in logging.root.handlers[:]:
@@ -56,16 +64,23 @@ class GitPluginAction(pcbnew.ActionPlugin):
         logger.info("Repository top directory: {}".format(self.repo_dir.strip()))
 
     def Run(self) -> None:
-        self.Initialize()
+        initialized = False
+        try:
+            self.Initialize()
+            initialized = True
+        except PluginException as e:
+            error = wx.MessageDialog(self.window, e.message, style=wx.ICON_ERROR)
+            error.ShowModal()
 
-        git_add(self.repo_dir, self.board_file)
-        commit_info = git_commit_info(self.repo_dir, self.board_file)
+        if initialized:
+            git_add(self.repo_dir, self.board_file)
+            commit_info = git_commit_info(self.repo_dir, self.board_file)
 
-        dlg = GitDialog(wx.GetActiveWindow(), commit_info)
-        if dlg.ShowModal() == wx.ID_OK:
-            message = dlg.get_commit_message()
-            if message:
-                git_commit(self.repo_dir, self.board_file, message)
+            dlg = GitDialog(self.window, commit_info)
+            if dlg.ShowModal() == wx.ID_OK:
+                message = dlg.get_commit_message()
+                if message:
+                    git_commit(self.repo_dir, self.board_file, message)
+            dlg.Destroy()
 
-        dlg.Destroy()
         logging.shutdown()
