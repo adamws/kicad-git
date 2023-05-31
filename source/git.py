@@ -20,9 +20,10 @@ def __run(command: str, cwd: Path) -> str:
 
 
 def toplevel(path: Path) -> Optional[Path]:
-    result = __run("rev-parse --show-toplevel", path).strip()
-    if result:
-        return Path(result)
+    if path.exists():
+        result = __run("rev-parse --show-toplevel", path).strip()
+        if result:
+            return Path(result)
     return None
 
 
