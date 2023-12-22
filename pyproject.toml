@@ -50,7 +50,7 @@ description_full = [
 identifier = "com.github.adamws.kicad-git"
 author = { name = "adamws", web="https://adamws.github.io" }
 status = "{env:PLUGIN_KICAD_STATUS:development}"
-kicad_version = "6.0"
+kicad_version = "7.0"
 sources = ["source"] # rewrite paths
 include = [
   "source/*.py",
