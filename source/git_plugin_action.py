@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from pathlib import Path
 
 import pcbnew
 import wx
@@ -39,7 +40,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
             msg = "Could not locate .kicad_pcb file, open or create it first"
             raise PluginException(msg)
 
-        self.board_dir = os.path.dirname(os.path.abspath(self.board_file))
+        self.board_dir = Path(self.board_file).parent
 
         self.repo_dir = git.toplevel(self.board_dir)
         if self.repo_dir is None:
@@ -61,6 +62,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
         logger.info(f"Plugin executed with KiCad version: {version}")
         logger.info(f"Plugin executed with python version: {repr(sys.version)}")
         logger.info(f"Repository top directory: {self.repo_dir}")
+        logger.info(f"Board file: {self.board_file}")
 
     def Run(self) -> None:
         initialized = False
