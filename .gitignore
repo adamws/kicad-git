@@ -1,2 +1,6 @@
 .env/
 __pycache__/
+source/version.txt
+dist/
+*.egg-info/
+.mypy_cache/

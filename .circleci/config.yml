@@ -52,24 +52,40 @@ jobs:
           working_directory: tests
       - store_test_results:
           path: tests/test-results
-  create-release:
+  create-pcm-package:
     docker:
       - image: cimg/python:3.11
     steps:
       - checkout
       - run:
-          name: Create zip package
+          name: Setup environment variables
           command: |
-            ./release/release.sh
+            if [ -z "$CIRCLE_TAG" ]; then
+              echo "Building development package"
+            else
+              echo "Building release package"
+              echo "export PLUGIN_KICAD_STATUS=stable" >> $BASH_ENV
+              echo "export PLUGIN_KICAD_RELEASE_URL=https://github.com/adamws/kicad-git/releases/download/v{version}/{zip_name}" >> $BASH_ENV
+            fi
+      - run:
+          name: Install dependencies
+          command: |
+            python -m pip install --upgrade hatch
+      - run:
+          name: Create zip package and repository
+          environment:
+            HATCH_BUILD_HOOK_ENABLE_KICAD-REPOSITORY: true
+          command: |
+            python -m hatch build --target kicad-package
       - store_artifacts:
-          path: release/kicad-git.zip
+          path: dist/repository
 
 workflows:
   main:
     jobs:
       - test-linux-kicad7
       - test-windows-kicad7
-      - create-release:
+      - create-pcm-package:
           requires:
             - test-linux-kicad7
             - test-windows-kicad7

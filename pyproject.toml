@@ -1,0 +1,103 @@
+[build-system]
+requires = [
+  "hatchling>=1.18",
+  "hatch-kicad",
+  "hatch-vcs",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "kicad-git"
+authors = [
+  { name = "adamws", email = "adamws@users.noreply.github.com" },
+]
+description = "KiCad plugin for git"
+keywords = ["kicad"]
+requires-python = ">=3.8"
+license = {text = "GPL-3.0"}
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Manufacturing",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)"
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/adamws/kicad-git"
+"Bug Tracker" = "https://github.com/adamws/kicad-git/issues"
+"Sponsor" = "https://ko-fi.com/adamws"
+
+[tool.hatch]
+build.targets.sdist.include = [
+  "source/*.py"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "source/version.txt"
+
+[tool.hatch.build.targets.kicad-package]
+name = "Git plugin"
+description = "KiCad plugin for git"
+description_full = [
+  "Git actions directly from KiCad's PCB editor window",
+]
+identifier = "com.github.adamws.kicad-git"
+author = { name = "adamws", web="https://adamws.github.io" }
+status = "{env:PLUGIN_KICAD_STATUS:development}"
+kicad_version = "6.0"
+sources = ["source"] # rewrite paths
+include = [
+  "source/*.py",
+  "source/version.txt",
+  "source/icon.png",
+]
+icon = "resources/icon.png"
+download_url = "{env:PLUGIN_KICAD_RELEASE_URL:https://adamws.github.io/kicad-git/{zip_name}}"
+
+[tool.hatch.build.targets.kicad-package.hooks.kicad-repository]
+enable-by-default = false
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+  "black>=23.1.0",
+  "mypy>=1.0.0",
+  "ruff>=0.0.243",
+]
+[tool.hatch.envs.lint.scripts]
+typing = "mypy --install-types --non-interactive --cache-dir=.mypy_cache {args:source tests}"
+style = [
+  "ruff {args:.}",
+  "black --check --diff {args:.}",
+]
+fmt = [
+  "black {args:.}",
+  "ruff --fix {args:.}",
+  "style",
+]
+all = [
+  "style",
+  "typing",
+]
+
+[tool.black]
+target-version = ["py37"]
+line-length = 88
+
+[tool.ruff]
+select = ["ANN", "E", "F", "I", "N", "PL", "W"]
+
+[tool.ruff.per-file-ignores]
+"source/git_plugin_action.py" = ["N802"]
+
+[tool.ruff.isort]
+known-first-party = ["hatch_kicad"]
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
