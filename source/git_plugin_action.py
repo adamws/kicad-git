@@ -8,12 +8,11 @@ import wx
 from . import git
 from .git_dialog import GitDialog
 
-
 logger = logging.getLogger(__name__)
 
 
 class PluginException(Exception):
-    def __init__(self, message):
+    def __init__(self, message) -> None:
         self.message = message
         super().__init__(self.message)
 
@@ -43,7 +42,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
         self.board_dir = os.path.dirname(os.path.abspath(self.board_file))
 
         self.repo_dir = git.toplevel(self.board_dir)
-        if self.repo_dir == None:
+        if self.repo_dir is None:
             msg = "Could not locate git repository"
             raise PluginException(msg)
 

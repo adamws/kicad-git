@@ -1,6 +1,5 @@
 import wx
 
-
 GIT_COMMIT_MESSAGE_COLUMNS = 80
 GIT_COMMENT_CHAR = "#"
 

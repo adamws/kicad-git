@@ -1,5 +1,4 @@
 import subprocess
-
 from pathlib import Path
 from typing import Optional
 
@@ -32,7 +31,7 @@ def check_unmodified(repo_dir: Path, path: Path) -> bool:
     return result == ""
 
 
-def add(repo_dir: Path, path: Path):
+def add(repo_dir: Path, path: Path) -> None:
     __run(f"add {path}", repo_dir)
 
 
@@ -57,7 +56,7 @@ def commit_info(repo_dir: Path, path: Path) -> str:
     return result
 
 
-def commit(repo_dir: Path, path: Path, message: str):
+def commit(repo_dir: Path, path: Path, message: str) -> None:
     __run(
         f'commit -m "{message}" {path}',
         repo_dir,

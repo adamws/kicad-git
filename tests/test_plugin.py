@@ -1,7 +1,7 @@
 import os
-import pcbnew
-
 from pathlib import Path
+
+import pcbnew
 
 
 def test_if_plugin_loads() -> None:
