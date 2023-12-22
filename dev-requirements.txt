@@ -1,3 +1,4 @@
 black==23.1.0
 dulwich==0.20.15
 pytest==7.2.0
+pytest-cov==4.1.0

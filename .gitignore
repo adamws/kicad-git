@@ -4,3 +4,4 @@ source/version.txt
 dist/
 *.egg-info/
 .mypy_cache/
+.coverage
