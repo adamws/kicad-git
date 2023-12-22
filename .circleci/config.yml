@@ -79,6 +79,17 @@ jobs:
             python -m hatch build --target kicad-package
       - store_artifacts:
           path: dist/repository
+      - when: # run only on master
+          condition:
+            equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - add_ssh_keys:
+                fingerprints:
+                  - "8f:40:c5:cb:fe:d1:a7:e1:ab:46:f6:f0:ba:4e:10:15"
+            - run:
+                name: Deploy repository to github pages
+                command: |
+                  ./release/deploy.sh
 
 workflows:
   main:
