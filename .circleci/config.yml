@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   test-linux-kicad7:
     docker:
-      - image: admwscki/kicad-kbplacer-primary:7.0-lunar
+      - image: admwscki/kicad-kbplacer-primary:7.0.9-lunar
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
             irm get.scoop.sh -outfile "install.ps1"
             .\install.ps1 -RunAsAdmin -ScoopDir "C:\scoop"
             scoop bucket add extras
-            scoop install kicad@7.0.2
+            scoop install kicad@7.0.9
             scoop cache rm --all
       - run:
           name: Install dependencies
