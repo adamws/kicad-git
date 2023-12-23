@@ -1,6 +1,7 @@
+import os
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 
 def __run(command: str, cwd: Path) -> str:
@@ -9,33 +10,40 @@ def __run(command: str, cwd: Path) -> str:
         cwd=cwd,
         shell=True,
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
         universal_newlines=True,
     )
     process.wait()
+    output = ""
     if process.stdout:
-        return process.stdout.read()
-    return ""
+        output = process.stdout.read()
+    if process.returncode == 0:
+        return output
+    error = f"Error: Failed to 'git {command}', received: {output}"
+    raise Exception(error)
 
 
 def toplevel(path: Path) -> Optional[Path]:
     if path.exists():
-        result = __run("rev-parse --show-toplevel", path).strip()
-        if result:
-            return Path(result)
+        try:
+            result = __run("rev-parse --show-toplevel", path).strip()
+            if result:
+                return Path(result)
+        except:
+            pass
     return None
 
 
-def check_unmodified(repo_dir: Path, path: Path) -> bool:
+def check_unmodified(repo_dir: Path, path: Union[str, os.PathLike] = "") -> bool:
     result = __run(f"status --porcelain {path}", repo_dir)
     return result == ""
 
 
-def add(repo_dir: Path, path: Path) -> None:
+def add(repo_dir: Path, path: Union[str, os.PathLike]) -> None:
     __run(f"add {path}", repo_dir)
 
 
-def commit_info(repo_dir: Path, path: Path) -> str:
+def commit_info(repo_dir: Path, path: Union[str, os.PathLike]) -> str:
     output = __run(
         f"commit --dry-run {path}",
         repo_dir,
@@ -56,11 +64,8 @@ def commit_info(repo_dir: Path, path: Path) -> str:
     return result
 
 
-def commit(repo_dir: Path, path: Path, message: str) -> None:
-    __run(
-        f'commit -m "{message}" {path}',
-        repo_dir,
-    )
+def commit(repo_dir: Path, path: Union[str, os.PathLike], message: str) -> None:
+    __run(f'commit -m "{message}" {path}', repo_dir)
 
 
 __all__ = ["toplevel", "check_unmodified", "add", "commit_info", "commit"]
