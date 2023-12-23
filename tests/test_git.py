@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 import pytest
 from dulwich import porcelain
 from dulwich.repo import Repo
@@ -57,6 +59,23 @@ def test_add_content(repo) -> None:
         f.write("bar")
     g.add(repo.path, "foo")
     assert porcelain.status(repo.path).staged["add"] == [b"foo"]
+
+
+def test_get_commit_info(repo) -> None:
+    with open(f"{repo.path}/foo", "w") as f:
+        f.write("bar")
+    g.add(repo.path, "foo")
+
+    expected = """
+    # Please enter the commit message for your changes. Lines starting
+    # with '#' will be ignored, and an empty message aborts the commit.
+    """
+    assert g.commit_info(repo.path).startswith(dedent(expected))
+
+
+def test_get_commit_info_with_nothing_to_commit(repo) -> None:
+    with pytest.raises(Exception, match=r"Error: Failed to \'git commit.*"):
+        g.commit_info(repo.path)
 
 
 def test_commit_content(repo) -> None:
