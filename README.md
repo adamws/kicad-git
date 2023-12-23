@@ -12,9 +12,13 @@ KiCad plugin for git integration. Commit changes without leaving PCB editor wind
 ## Installation
 
 This plugin is not released yet and it is not available in KiCad's official plugin repository.
-In order to install via `Plugin and Content Manager` grab latest package build from circleci
-and use `Install from File...` option or alternatively checkout this repository
-and copy (or link) content of `source` directory to one of the KiCad's plugin search paths.
+Latest `master` build is automatically uploaded to unofficial PCM compatible
+[repository](https://adamws.github.io/kicad-git/) hosted on GitHub pages.
+In order to install it via `Plugin and Content Manager` add `https://adamws.github.io/kicad-git/repository.json`
+to PCM repository list.
+
+Alternatively checkout this repository and copy (or link) content of `source` directory
+to one of the KiCad's plugin search paths.
 For more details see [this](https://dev-docs.kicad.org/en/python/pcbnew/) guide.
 
 ## How to use?
