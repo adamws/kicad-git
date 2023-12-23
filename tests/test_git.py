@@ -73,11 +73,6 @@ def test_get_commit_info(repo) -> None:
     assert g.commit_info(repo.path).startswith(dedent(expected))
 
 
-def test_get_commit_info_with_nothing_to_commit(repo) -> None:
-    with pytest.raises(Exception, match=r"Error: Failed to \'git commit.*"):
-        g.commit_info(repo.path)
-
-
 def test_commit_content(repo) -> None:
     with open(f"{repo.path}/foo", "w") as f:
         f.write("bar")

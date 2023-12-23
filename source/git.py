@@ -45,7 +45,7 @@ def add(repo_dir: Path, path: Union[str, os.PathLike]) -> None:
 
 def commit_info(repo_dir: Path, path: Union[str, os.PathLike] = "") -> str:
     output = __run(
-        f"commit --dry-run {path}",
+        f"status {path}",
         repo_dir,
     )
     result = ""
