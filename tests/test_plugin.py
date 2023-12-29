@@ -13,6 +13,7 @@ from source.git_plugin_action import (
     get_git_version,
     get_kicad_version,
     get_repo_dir,
+    setup_logging,
 )
 
 
@@ -21,6 +22,11 @@ def test_if_plugin_loads() -> None:
     pcbnew.LoadPluginModule(dirname, "source", "")
     not_loaded = pcbnew.GetUnLoadableWizards()
     assert not_loaded == "", pcbnew.GetWizardsBackTrace()
+
+
+def test_setup_loggin(tmpdir: Path) -> None:
+    setup_logging(str(tmpdir))
+    assert Path(f"{tmpdir}/kicadgit.log").exists()
 
 
 def test_get_kicad_version() -> None:
