@@ -1,5 +1,6 @@
 .env/
 __pycache__/
+source/kicadgit.log
 source/version.txt
 dist/
 *.egg-info/
