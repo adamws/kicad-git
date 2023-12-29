@@ -19,7 +19,7 @@ to PCM repository list.
 
 Alternatively checkout this repository and copy (or link) content of `source` directory
 to one of the KiCad's plugin search paths.
-For more details see [this](https://dev-docs.kicad.org/en/python/pcbnew/) guide.
+For more details see [this](https://dev-docs.kicad.org/en/apis-and-binding/pcbnew/) guide.
 
 ## How to use?
 
