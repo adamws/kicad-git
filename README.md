@@ -1,6 +1,7 @@
 # kicad-git
 
 [![CircleCI](https://circleci.com/gh/adamws/kicad-git.svg?style=shield)](https://circleci.com/gh/adamws/kicad-git/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/adamws/kicad-git/badge.svg?branch=master)](https://coveralls.io/github/adamws/kicad-git?branch=master)
 
 KiCad plugin for git integration. Launch [git](https://git-scm.com/docs/git-citool) commit graphical interface without leaving PCB editor window.
 

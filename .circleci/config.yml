@@ -13,10 +13,18 @@ jobs:
       - run:
           name: Run tests
           command: |
-            pytest --junitxml=test-results/pytest/results.xml
-          working_directory: tests
+            pytest --junitxml=test-results/pytest/results.xml tests/
       - store_test_results:
-          path: tests/test-results
+          path: test-results
+      - when: # run only on master
+          condition:
+            equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Publish coverage
+                command: |
+                  pip3 install coveralls
+                  python3 -m coveralls
   test-windows-kicad7:
     machine:
       image: windows-server-2022-gui:current
