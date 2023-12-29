@@ -38,11 +38,7 @@ def toplevel(path: Path) -> Optional[Path]:
 
 
 def citool(repo_dir: Path) -> None:
-    subprocess.Popen(
-        "git citool",
-        cwd=repo_dir,
-        shell=True,
-    )
+    subprocess.Popen("git citool", cwd=repo_dir, shell=True)
 
 
 __all__ = ["version", "toplevel", "citool"]
