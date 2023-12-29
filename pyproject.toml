@@ -92,6 +92,7 @@ line-length = 88
 
 [tool.ruff]
 select = ["ANN", "E", "F", "I", "N", "PL", "W"]
+ignore = ["ANN101"]
 
 [tool.ruff.per-file-ignores]
 "source/git_plugin_action.py" = ["N802"]
