@@ -27,6 +27,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
 
     def Initialize(self) -> None:
         self.window = wx.GetActiveWindow()
+        self.plugin_path = os.path.dirname(__file__)
 
         version = pcbnew.Version()
         if int(version.split(".")[0]) < 7:
@@ -62,7 +63,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
         # set up logger
         logging.basicConfig(
             level=logging.DEBUG,
-            filename=f"{self.board_dir}/kicadgit.log",
+            filename=f"{self.plugin_path}/kicadgit.log",
             filemode="w",
             format="%(asctime)s %(name)s %(lineno)d: %(message)s",
             datefmt="%H:%M:%S",
