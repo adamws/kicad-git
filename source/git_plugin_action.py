@@ -39,6 +39,15 @@ class GitPluginAction(pcbnew.ActionPlugin):
             msg = "Could not locate .kicad_pcb file, open or create it first"
             raise PluginException(msg)
 
+        try:
+            git_version_str = git.version()
+            if not git_version_str.startswith("git version "):
+                msg = "Could not find git executable"
+                raise PluginException(msg)
+        except Exception as e:
+            msg = f"Could not find git executable: {e}"
+            raise PluginException(msg)
+
         self.board_dir = Path(self.board_file).parent
 
         self.repo_dir = git.toplevel(self.board_dir)

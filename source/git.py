@@ -22,6 +22,10 @@ def __run(command: str, cwd: Path) -> str:
     raise Exception(error)
 
 
+def version() -> str:
+    return __run("version", Path("."))
+
+
 def toplevel(path: Path) -> Optional[Path]:
     if path.exists():
         try:
@@ -40,4 +44,5 @@ def citool(repo_dir: Path) -> None:
         shell=True,
     )
 
-__all__ = ["toplevel", "citool"]
+
+__all__ = ["version", "toplevel", "citool"]

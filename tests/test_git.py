@@ -14,7 +14,11 @@ def repo(tmpdir) -> Repo:
     return repo
 
 
-def test_toplevel_in_repo(repo) -> None:
+def test_get_version() -> None:
+    assert g.version().startswith("git version ")
+
+
+def test_toplevel_in_repo(repo: Repo) -> None:
     assert repo.path == g.toplevel(repo.path)
 
 
