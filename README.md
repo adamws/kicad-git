@@ -1,13 +1,8 @@
 # kicad-git
 
 [![CircleCI](https://circleci.com/gh/adamws/kicad-git.svg?style=shield)](https://circleci.com/gh/adamws/kicad-git/tree/master)
-:warning: This is work in progress
 
-KiCad plugin for git integration. Commit changes without leaving PCB editor window.
-
-## Features
-
-- [x] Commit changes from `pcbnew` window
+KiCad plugin for git integration. Launch [git](https://git-scm.com/docs/git-citool) commit graphical interface without leaving PCB editor window.
 
 ## Installation
 
