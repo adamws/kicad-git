@@ -1,7 +1,6 @@
-import os
 import subprocess
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 
 def __run(command: str, cwd: Path) -> str:
@@ -34,38 +33,11 @@ def toplevel(path: Path) -> Optional[Path]:
     return None
 
 
-def check_unmodified(repo_dir: Path, path: Union[str, os.PathLike] = "") -> bool:
-    result = __run(f"status --porcelain {path}", repo_dir)
-    return result == ""
-
-
-def add(repo_dir: Path, path: Union[str, os.PathLike]) -> None:
-    __run(f"add {path}", repo_dir)
-
-
-def commit_info(repo_dir: Path, path: Union[str, os.PathLike] = "") -> str:
-    output = __run(
-        f"status {path}",
-        repo_dir,
+def citool(repo_dir: Path) -> None:
+    subprocess.Popen(
+        "git citool",
+        cwd=repo_dir,
+        shell=True,
     )
-    result = ""
-    if output:
-        result += (
-            "\n"
-            "# Please enter the commit message for your changes. Lines starting\n"
-            "# with '#' will be ignored, and an empty message aborts the commit.\n"
-            "#\n"
-        )
-        for line in output.splitlines(keepends=True):
-            if '(use "git rm --cached <file>' in line or '(use "git add <file>' in line:
-                continue
-            result += "# "
-            result += line
-    return result
 
-
-def commit(repo_dir: Path, path: Union[str, os.PathLike], message: str) -> None:
-    __run(f'commit -m "{message}" {path}', repo_dir)
-
-
-__all__ = ["toplevel", "check_unmodified", "add", "commit_info", "commit"]
+__all__ = ["toplevel", "citool"]

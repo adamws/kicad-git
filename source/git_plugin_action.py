@@ -7,7 +7,6 @@ import pcbnew
 import wx
 
 from . import git
-from .git_dialog import GitDialog
 
 logger = logging.getLogger(__name__)
 
@@ -74,22 +73,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
             error.ShowModal()
 
         if initialized and self.repo_dir:
-            is_unmodified = git.check_unmodified(self.repo_dir, self.board_file)
-            if is_unmodified:
-                message = "Nothing to commit"
-                info = wx.MessageDialog(
-                    self.window, message, style=wx.OK | wx.ICON_INFORMATION
-                )
-                info.ShowModal()
-            else:
-                git.add(self.repo_dir, self.board_file)
-                commit_info = git.commit_info(self.repo_dir, self.board_file)
-
-                dlg = GitDialog(self.window, commit_info)
-                if dlg.ShowModal() == wx.ID_OK:
-                    message = dlg.get_commit_message()
-                    if message:
-                        git.commit(self.repo_dir, self.board_file, message)
-                dlg.Destroy()
+            self.board.Save(self.board_file)
+            git.citool(self.repo_dir)
 
         logging.shutdown()
