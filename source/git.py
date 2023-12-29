@@ -19,7 +19,7 @@ def __run(command: str, cwd: Path) -> str:
     if process.returncode == 0:
         return output
     error = f"Error: Failed to 'git {command}', received: {output}"
-    raise Exception(error)
+    raise RuntimeError(error)
 
 
 def version() -> str:
@@ -32,7 +32,7 @@ def toplevel(path: Path) -> Optional[Path]:
             result = __run("rev-parse --show-toplevel", path).strip()
             if result:
                 return Path(result)
-        except:
+        except RuntimeError:
             pass
     return None
 
