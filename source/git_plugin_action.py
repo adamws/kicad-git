@@ -70,6 +70,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
         )
         logger.info(f"Plugin executed with KiCad version: {version}")
         logger.info(f"Plugin executed with python version: {repr(sys.version)}")
+        logger.info(f"Plugin executed with {git_version_str}")
         logger.info(f"Repository top directory: {self.repo_dir}")
         logger.info(f"Board file: {self.board_file}")
 
