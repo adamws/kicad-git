@@ -24,6 +24,8 @@ to PCM repository list.
 
   ![toolbar-image](resources/toolbar.png)
 
+  ![how-to-commit](resources/how-to-commit.png)
+
 ### See also
 
 :link: [PCB visual diff with kicad-cli and lukaj](https://adamws.github.io/pcb-visual-diff-with-kicad-cli-and-lukaj)
