@@ -1,6 +1,7 @@
 # kicad-git
 
 [![KiCad Repository](https://img.shields.io/badge/KiCad-Plugin%20Repository-blue)](https://gitlab.com/kicad/addons/metadata/-/tree/main/packages/com.github.adamws.kicad-git)
+![GitHub all releases](https://img.shields.io/github/downloads/adamws/kicad-git/total)
 [![CircleCI](https://circleci.com/gh/adamws/kicad-git.svg?style=shield)](https://circleci.com/gh/adamws/kicad-git/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/adamws/kicad-git/badge.svg?branch=master)](https://coveralls.io/github/adamws/kicad-git?branch=master)
 
