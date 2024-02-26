@@ -19,6 +19,11 @@ Latest `master` build is automatically uploaded to unofficial PCM compatible
 To use it, add `https://adamws.github.io/kicad-git/repository.json`
 to PCM repository list.
 
+> [!WARNING]
+> This plugin requires `git citool` to be installed, on some systems it is
+> distributed as part of the git suite.
+> On macOS it might be required to install it separately with `brew install git-gui`
+
 ## How to use?
 
 - Click plugin button to open commit window
