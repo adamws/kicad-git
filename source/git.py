@@ -1,11 +1,19 @@
+import platform
 import subprocess
 from pathlib import Path
 from typing import Optional
 
+if platform.system() == "Darwin":
+    gitTool = "/opt/homebrew/bin/git "
+    gitCITool = "/opt/homebrew/bin/git-citool "
+else:
+    gitTool = "git "
+    gitCITool = "git citool"
+
 
 def __run(command: str, cwd: Path) -> str:
     process = subprocess.Popen(
-        "git " + command,
+        gitTool + command,
         cwd=cwd,
         shell=True,
         stdout=subprocess.PIPE,
@@ -38,7 +46,7 @@ def toplevel(path: Path) -> Optional[Path]:
 
 
 def citool(repo_dir: Path) -> None:
-    subprocess.Popen("git citool", cwd=repo_dir, shell=True)
+    subprocess.Popen(gitCITool, cwd=repo_dir, shell=True)
 
 
 __all__ = ["version", "toplevel", "citool"]
