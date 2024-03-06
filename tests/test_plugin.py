@@ -24,7 +24,7 @@ def test_if_plugin_loads() -> None:
     assert not_loaded == "", pcbnew.GetWizardsBackTrace()
 
 
-def test_setup_loggin(tmpdir: Path) -> None:
+def test_setup_logging(tmpdir: Path) -> None:
     setup_logging(str(tmpdir))
     assert Path(f"{tmpdir}/kicadgit.log").exists()
 
