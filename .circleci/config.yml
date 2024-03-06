@@ -1,9 +1,12 @@
 version: 2.1
 
 jobs:
-  test-linux-kicad7:
+  test-linux:
+    parameters:
+      version:
+        type: string
     docker:
-      - image: admwscki/kicad-kbplacer-primary:7.0.9-lunar
+      - image: admwscki/kicad-kbplacer-primary:<<parameters.version>>
     steps:
       - checkout
       - run:
@@ -16,9 +19,11 @@ jobs:
             pytest --junitxml=test-results/pytest/results.xml tests/
       - store_test_results:
           path: test-results
-      - when: # run only on master
+      - when: # run only on master and one kicad selected version
           condition:
-            equal: [ master, << pipeline.git.branch >> ]
+            and:
+              - equal: [ 8.0.0-mantic, << parameters.version >> ]
+              - equal: [ master, << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Publish coverage
@@ -102,11 +107,16 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-linux-kicad7
+      - test-linux:
+          matrix:
+            parameters:
+              version:
+                - 7.0.11-mantic
+                - 8.0.0-mantic
       - test-windows-kicad7
       - create-pcm-package:
           requires:
-            - test-linux-kicad7
+            - test-linux
             - test-windows-kicad7
   kicad-release:
     jobs:
