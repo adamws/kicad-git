@@ -1,14 +1,25 @@
+import configparser
+import os
 import platform
 import subprocess
 from pathlib import Path
 from typing import Optional
 
 if platform.system() == "Darwin":
-    git = "/opt/homebrew/bin/git"
-    git_citool = "/opt/homebrew/bin/git-citool"
+    DEFAULT_CONFIG = """[paths]
+        git = /opt/homebrew/bin/git
+        git_gui = /opt/homebrew/bin/git-citool"""
 else:
-    git = "git"
-    git_citool = "git citool"
+    DEFAULT_CONFIG = """[paths]
+        git = git
+        git_gui = git citool"""
+
+config = configparser.ConfigParser()
+config.read_string(DEFAULT_CONFIG)
+config.read(os.path.dirname(__file__) + "/config.ini")
+
+git: str = config["paths"]["git"]
+git_gui: str = config["paths"]["git_gui"]
 
 
 def __run(command: str, cwd: Path) -> str:
@@ -46,7 +57,7 @@ def toplevel(path: Path) -> Optional[Path]:
 
 
 def citool(repo_dir: Path) -> None:
-    subprocess.Popen(git_citool, cwd=repo_dir, shell=True)
+    subprocess.Popen(git_gui, cwd=repo_dir, shell=True)
 
 
 __all__ = ["version", "toplevel", "citool"]

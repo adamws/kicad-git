@@ -5,7 +5,7 @@
 [![CircleCI](https://circleci.com/gh/adamws/kicad-git.svg?style=shield)](https://circleci.com/gh/adamws/kicad-git/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/adamws/kicad-git/badge.svg?branch=master)](https://coveralls.io/github/adamws/kicad-git?branch=master)
 
-KiCad plugin for git integration. Launch [git](https://git-scm.com/docs/git-citool) commit graphical interface without leaving PCB editor window.
+KiCad plugin for git integration. Launch git commit graphical interface without leaving PCB editor window.
 
 ## Installation
 
@@ -20,8 +20,8 @@ To use it, add `https://adamws.github.io/kicad-git/repository.json`
 to PCM repository list.
 
 > [!WARNING]
-> This plugin requires `git citool` to be installed, on some systems it is
-> distributed as part of the git suite.
+> By default, this plugin uses [`git citool`](https://git-scm.com/docs/git-citool).
+> On most systems it is distributed as part of the git suite.
 > On macOS it might be required to install it separately with `brew install git-gui`
 
 ## How to use?
@@ -31,6 +31,22 @@ to PCM repository list.
   ![toolbar-image](resources/toolbar.png)
 
   ![how-to-commit](resources/how-to-commit.png)
+
+### Configuration
+
+To configure different command for starting git GUI or explicitly define git executable path,
+create `config.ini` file in the plugin directory.
+
+For example, to use [TortoiseGit](https://tortoisegit.org) and non standard (not in system search `PATH`) git executable:
+
+```ini
+[paths]
+git = C:\some\path\git.exe
+git_gui = TortoiseGitProc.exe /command:commit
+```
+
+> [!WARNING]
+> The `[paths]` section in config file is required and can't be skipped.
 
 ### See also
 
