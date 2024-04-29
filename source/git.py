@@ -1,7 +1,9 @@
 import configparser
 import os
 import platform
+import shlex
 import subprocess
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -23,10 +25,12 @@ git_gui: str = config["paths"]["git_gui"]
 
 
 def __run(command: str, cwd: Path) -> str:
+    args = f"{git} {command}"
+    if sys.platform != "win32":
+        args = shlex.split(args)
     process = subprocess.Popen(
-        git + " " + command,
+        args,
         cwd=cwd,
-        shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
@@ -57,7 +61,10 @@ def toplevel(path: Path) -> Optional[Path]:
 
 
 def guitool(repo_dir: Path) -> None:
-    subprocess.Popen(git_gui, cwd=repo_dir, shell=True)
+    args = git_gui
+    if sys.platform != "win32":
+        args = shlex.split(args)
+    subprocess.Popen(args, cwd=repo_dir)
 
 
 __all__ = ["version", "toplevel", "guitool"]
