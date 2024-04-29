@@ -1,0 +1,22 @@
+{
+    "$schema": "https://gitlab.com/kicad/code/kicad/-/raw/master/kicad/pcm/schemas/pcm.v1.schema.json#/definitions/Repository",
+    "maintainer": {
+        "name": "adamws",
+        "contact": {
+            "web": "https://adamws.github.io"
+        }
+    },
+    "name": "https://adamws.github.io/kicad-git repository",
+    "packages": {
+        "url": "https://adamws.github.io/kicad-git/packages.json",
+        "sha256": "47e794a21c07721eadffea2f4e0cbf6bb01b28d67d4773d87c33ac794589a45d",
+        "update_time_utc": "2024-04-29 18:58:58",
+        "update_timestamp": 1714417138
+    },
+    "resources": {
+        "url": "https://adamws.github.io/kicad-git/resources.zip",
+        "sha256": "d4a14b6bca51dc1ad201c5f612a6521369af6603b724a771592eb059fcbdbe49",
+        "update_time_utc": "2024-04-29 18:58:58",
+        "update_timestamp": 1714417138
+    }
+}
