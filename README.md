@@ -20,7 +20,7 @@ To use it, add `https://adamws.github.io/kicad-git/repository.json`
 to PCM repository list.
 
 > [!WARNING]
-> By default, this plugin uses [`git citool`](https://git-scm.com/docs/git-citool).
+> By default, this plugin uses [`git gui`](https://git-scm.com/docs/git-gui).
 > On most systems it is distributed as part of the git suite.
 > On macOS it might be required to install it separately with `brew install git-gui`
 
@@ -47,6 +47,19 @@ git_gui = TortoiseGitProc.exe /command:commit
 
 > [!WARNING]
 > The `[paths]` section in config file is required and can't be skipped.
+
+By default, this plugin starts `git gui` window which will remain open after clicking 'commit'
+button. To start window for arranging and making exactly one commit use `git citool` instead:
+
+```ini
+[paths]
+git = C:\some\path\git.exe
+git_gui = C:\some\path\git.exe citool
+```
+
+> [!WARNING]
+> The `citool` is limited only to commits, `push` to remote is not supported from this view.
+> See [git manual page](https://www.man7.org/linux/man-pages/man1/git-gui.1.html#top_of_page) to learn more.
 
 ### See also
 

@@ -102,7 +102,7 @@ class GitPluginAction(pcbnew.ActionPlugin):
         try:
             self.Initialize()
             self.board.Save(self.board_file)
-            git.citool(self.repo_dir)
+            git.guitool(self.repo_dir)
         except PluginError as e:
             error = wx.MessageDialog(self.window, e.message, style=wx.ICON_ERROR)
             error.ShowModal()

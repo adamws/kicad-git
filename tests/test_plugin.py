@@ -114,9 +114,9 @@ def test_get_repo_dir_exception(tmpdir: Path) -> None:
     return_value=(MagicMock(), "test_board.kicad_pcb"),
 )
 @patch("source.git_plugin_action.get_repo_dir", return_value="/path/to/repo")
-@patch("source.git.citool")
+@patch("source.git.guitool")
 def test_run_success(
-    mock_citool: MagicMock,
+    mock_guitool: MagicMock,
     mock_get_repo_dir: MagicMock,
     mock_get_board: MagicMock,
     mock_get_git_version: MagicMock,
@@ -137,5 +137,5 @@ def test_run_success(
     mock_get_git_version.assert_called_once()
     mock_get_board.assert_called_once()
     mock_get_repo_dir.assert_called_once()
-    mock_citool.assert_called_once_with("/path/to/repo")
+    mock_guitool.assert_called_once_with("/path/to/repo")
     mock_message_dialog.assert_not_called()

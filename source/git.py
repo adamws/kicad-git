@@ -8,11 +8,11 @@ from typing import Optional
 if platform.system() == "Darwin":
     DEFAULT_CONFIG = """[paths]
         git = /opt/homebrew/bin/git
-        git_gui = /opt/homebrew/bin/git-citool"""
+        git_gui = /opt/homebrew/bin/git gui"""
 else:
     DEFAULT_CONFIG = """[paths]
         git = git
-        git_gui = git citool"""
+        git_gui = git gui"""
 
 config = configparser.ConfigParser()
 config.read_string(DEFAULT_CONFIG)
@@ -56,8 +56,8 @@ def toplevel(path: Path) -> Optional[Path]:
     return None
 
 
-def citool(repo_dir: Path) -> None:
+def guitool(repo_dir: Path) -> None:
     subprocess.Popen(git_gui, cwd=repo_dir, shell=True)
 
 
-__all__ = ["version", "toplevel", "citool"]
+__all__ = ["version", "toplevel", "guitool"]
