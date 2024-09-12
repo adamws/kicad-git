@@ -32,6 +32,9 @@ to PCM repository list.
 
   ![how-to-commit](resources/how-to-commit.png)
 
+> [!IMPORTANT]
+> Plugin button appears only in PCB editor and not in schematic editor. This is KiCad limitation.
+
 ### Configuration
 
 To configure different command for starting git GUI or explicitly define git executable path,
