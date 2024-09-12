@@ -1,0 +1,35 @@
+{
+    "packages": [
+        {
+            "$schema": "https://go.kicad.org/pcm/schemas/v1",
+            "name": "Git plugin",
+            "description": "KiCad plugin for git",
+            "description_full": "Git actions directly from KiCad's PCB editor window",
+            "identifier": "com.github.adamws.kicad-git",
+            "type": "plugin",
+            "author": {
+                "name": "adamws",
+                "contact": {
+                    "web": "https://adamws.github.io"
+                }
+            },
+            "license": "GPL-3.0",
+            "resources": {
+                "Homepage": "https://github.com/adamws/kicad-git",
+                "Bug Tracker": "https://github.com/adamws/kicad-git/issues",
+                "Sponsor": "https://ko-fi.com/adamws"
+            },
+            "versions": [
+                {
+                    "version": "0.4",
+                    "status": "development",
+                    "kicad_version": "7.0",
+                    "download_sha256": "10ed3fe65a7061bb58c82e007d587fd8e3bbfcd9bc327fe62083a2d5588dae95",
+                    "download_size": 8774,
+                    "install_size": 7966,
+                    "download_url": "https://adamws.github.io/kicad-git/kicad_git-0.4.dev1+g91b58a0.zip"
+                }
+            ]
+        }
+    ]
+}
