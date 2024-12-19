@@ -1,0 +1,72 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+  </head>
+  <script src="https://cdn.jsdelivr.net/npm/linkifyjs@4.1.1/dist/linkify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/linkify-html@4.1.1/dist/linkify-html.min.js"></script>
+  <script>
+    window.onload = function () {
+      let packages = document.getElementById("packages");
+      packages.innerHTML = linkifyHtml(packages.innerHTML);
+    };
+  </script>
+  <body>
+    <main class="container">
+      <p>
+        Add <mark>https://adamws.github.io/kicad-git/repository.json</mark> to KiCad's repository
+        list to use these packages:
+      </p>
+      <pre><code id="packages">{
+    "packages": [
+        {
+            "$schema": "https://go.kicad.org/pcm/schemas/v1",
+            "name": "Git plugin",
+            "description": "KiCad plugin for git",
+            "description_full": "Git actions directly from KiCad's PCB editor window",
+            "identifier": "com.github.adamws.kicad-git",
+            "type": "plugin",
+            "author": {
+                "name": "adamws",
+                "contact": {
+                    "web": "https://adamws.github.io"
+                }
+            },
+            "license": "GPL-3.0",
+            "resources": {
+                "Homepage": "https://github.com/adamws/kicad-git",
+                "Bug Tracker": "https://github.com/adamws/kicad-git/issues",
+                "Sponsor": "https://ko-fi.com/adamws"
+            },
+            "versions": [
+                {
+                    "version": "0.4",
+                    "status": "development",
+                    "kicad_version": "7.0",
+                    "download_sha256": "d159b366f4a532ca9bde517dadd491205a48a494e058db469c838715eb885174",
+                    "download_size": 8774,
+                    "install_size": 7966,
+                    "download_url": "https://adamws.github.io/kicad-git/kicad_git-0.4.dev2+gd81ee48.zip"
+                }
+            ]
+        }
+    ]
+}</code></pre>
+      <footer>
+        <small
+          >Built with
+          <a href="https://github.com/adamws/hatch-kicad" class="secondary"
+            >hatch-kicad</a
+          ></small
+        >
+      </footer>
+    </main>
+  </body>
+</html>
