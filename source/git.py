@@ -46,7 +46,7 @@ def __run(command: str, cwd: Path) -> str:
 
 
 def version() -> str:
-    return __run("version", Path("."))
+    return __run("version", Path(".")).strip("\n")
 
 
 def toplevel(path: Path) -> Optional[Path]:
@@ -60,11 +60,36 @@ def toplevel(path: Path) -> Optional[Path]:
     return None
 
 
-def guitool(repo_dir: Path) -> None:
+def guitool(repo_dir: Path) -> subprocess.Popen:
     args = git_gui
     if sys.platform != "win32":
         args = shlex.split(args)
-    subprocess.Popen(args, cwd=repo_dir)
+        creationflags = 0
+    else:
+        # Prevents terminal window on Windows
+        creationflags = subprocess.CREATE_NO_WINDOW
+
+    process = subprocess.Popen(args, cwd=repo_dir, creationflags=creationflags)
+
+    # this check works only on linux, on windows git gui gets detached
+    # so it can't be checked using this method. On windows, git gui
+    # should be installed with regular git so it is not as critical as
+    # for linux where this may vary between distributions
+    if sys.platform != "win32" and "git gui" in git_gui:
+        try:
+            # using short timeout because we do not want to freeze kicad
+            # window when git gui running. This exist only to check
+            # if we terminated unexpectedly.
+            process.wait(timeout=1)
+        except subprocess.TimeoutExpired:
+            pass  # this is ok, process still running
+        else:
+            if process.returncode != 0:
+                # this means that something has failed,
+                # for example git gui not installed.
+                error = f"Error: Failed to run '{git_gui}'"
+                raise RuntimeError(error)
+        return process
 
 
 __all__ = ["version", "toplevel", "guitool"]

@@ -22,7 +22,7 @@ jobs:
       - when: # run only on master and one kicad selected version
           condition:
             and:
-              - equal: [ 8.0.0-mantic, << parameters.version >> ]
+              - equal: [ 8.0.7-jammy, << parameters.version >> ]
               - equal: [ master, << pipeline.git.branch >> ]
           steps:
             - run:
@@ -45,7 +45,7 @@ jobs:
             irm get.scoop.sh -outfile "install.ps1"
             .\install.ps1 -RunAsAdmin -ScoopDir "C:\scoop"
             scoop bucket add extras
-            scoop install kicad@7.0.9
+            scoop install kicad@7.0.11
             scoop cache rm --all
       - run:
           name: Install dependencies
@@ -111,8 +111,8 @@ workflows:
           matrix:
             parameters:
               version:
-                - 7.0.11-mantic
-                - 8.0.0-mantic
+                - 7.0.11-focal
+                - 8.0.7-jammy
       - test-windows-kicad7
       - create-pcm-package:
           requires:
