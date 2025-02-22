@@ -30,7 +30,7 @@ def test_setup_logging(tmpdir: Path) -> None:
 
 
 def test_get_kicad_version() -> None:
-    assert get_kicad_version()[0] in ["7", "8"]
+    assert get_kicad_version()[0] in ["7", "8", "9"]
 
 
 @patch("pcbnew.Version")

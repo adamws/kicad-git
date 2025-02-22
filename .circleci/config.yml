@@ -30,22 +30,23 @@ jobs:
                 command: |
                   pip3 install coveralls
                   python3 -m coveralls
-  test-windows-kicad7:
+  test-windows:
     machine:
-      image: windows-server-2022-gui:current
+      image: windows-server-2022-gui:edge
       shell: powershell.exe -ExecutionPolicy Bypass
     resource_class: windows.medium
+    parameters:
+      kicad-version:
+        type: string
     steps:
       - checkout
-      - restore_cache:
-          key: scoop-{{ .Branch }}-{{ checksum "dev-requirements.txt" }}
       - run:
           name: Install scoop and KiCad
           command: |
             irm get.scoop.sh -outfile "install.ps1"
             .\install.ps1 -RunAsAdmin -ScoopDir "C:\scoop"
             scoop bucket add extras
-            scoop install kicad@7.0.11
+            scoop install kicad@<<parameters.kicad-version>>
             scoop cache rm --all
       - run:
           name: Install dependencies
@@ -53,10 +54,6 @@ jobs:
             .\.circleci\scripts\use-kicad-python.ps1
             python -m pip install --upgrade pip
             pip install --no-cache-dir -r dev-requirements.txt
-      - save_cache:
-          key: scoop-{{ .Branch }}-{{ checksum "dev-requirements.txt" }}
-          paths:
-            - C:\scoop
       - run:
           name: Run tests
           command: |
@@ -111,13 +108,18 @@ workflows:
           matrix:
             parameters:
               version:
-                - 7.0.11-focal
-                - 8.0.7-jammy
-      - test-windows-kicad7
+                - 7.0.11-mantic
+                - 8.0.9-jammy
+                - 9.0.0-jammy
+      - test-windows:
+          matrix:
+            parameters:
+              kicad-version:
+                - 9.0.0
       - create-pcm-package:
           requires:
             - test-linux
-            - test-windows-kicad7
+            - test-windows
   kicad-release:
     jobs:
       - create-pcm-package:
