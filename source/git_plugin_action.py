@@ -82,25 +82,24 @@ def get_repo_dir(board_file: str) -> Path:
 class GitPluginAction(pcbnew.ActionPlugin):
     def defaults(self) -> None:
         self.name = "Git Plugin"
-        self.category = ""
-        self.description = ""
+        self.category = "Git"
+        self.description = "Open Git GUI for the current project"
         self.show_toolbar_button = True
         self.icon_file_name = os.path.join(os.path.dirname(__file__), "icon.png")
 
     def Initialize(self) -> None:
-        self.window = wx.GetActiveWindow()
         self.plugin_path = os.path.dirname(__file__)
         setup_logging(self.plugin_path)
-
-        _ = get_kicad_version()
-        _ = get_git_version()
-
-        self.board, self.board_file = get_board()
-        self.repo_dir = get_repo_dir(self.board_file)
+        self.window = wx.GetActiveWindow()
 
     def Run(self) -> None:
         try:
-            self.Initialize()
+            _ = get_kicad_version()
+            _ = get_git_version()
+
+            self.board, self.board_file = get_board()
+            self.repo_dir = get_repo_dir(self.board_file)
+
             self.board.Save(self.board_file)
             git.guitool(self.repo_dir)
         except PluginError as e:
